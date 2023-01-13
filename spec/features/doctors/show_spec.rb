@@ -39,4 +39,21 @@ RSpec.describe 'Doctor Show' do
         expect(page).to have_content(@patient1.name)
     end
   end
+  describe '' do
+    it "Then next to each patient's name, I see a button to remove that patient from that doctor's caseload
+    When I click that button for one patient
+    I'm brought back to the Doctor's show page
+    And I no longer see that patient's name listed
+    And when I visit a different doctor's show page that is caring for the same patient,
+    Then I see that the patient is still on the other doctor's caseload" do
+    patient5 = Patient.create!(name: 'deletepatient', age: 200)
+    dp4 = DoctorPatient.create!(doctor_id: @doctor1.id, patient_id: patient5.id)
+
+    visit "/doctors/#{@doctor1.id}"
+    expect(page).to have_content(patient5.name)
+    click_on "Delete #{patient5.name}"
+    expect(page).to_not have_content(patient5.name)
+    
+    end
+  end
 end

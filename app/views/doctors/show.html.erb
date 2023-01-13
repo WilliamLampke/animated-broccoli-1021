@@ -7,5 +7,9 @@
 <h4>Patients: </h4>
 <% @doctor.patients.each do |patient| %>
     <p><%= patient.name %></p>
+    <%= form_with url: "/doctors/#{@doctor.id}?patient_id=#{patient.id}", method: :delete, local: true do |f|%>
+        <%= f.submit "Delete #{patient.name}"%>
+
+    <% end %>
 <% end %>
 
