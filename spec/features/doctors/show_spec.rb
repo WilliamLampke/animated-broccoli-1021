@@ -47,13 +47,14 @@ RSpec.describe 'Doctor Show' do
     And when I visit a different doctor's show page that is caring for the same patient,
     Then I see that the patient is still on the other doctor's caseload" do
     patient5 = Patient.create!(name: 'deletepatient', age: 200)
-    dp4 = DoctorPatient.create!(doctor_id: @doctor1.id, patient_id: patient5.id)
-
+    dp5 = DoctorPatient.create!(doctor_id: @doctor1.id, patient_id: patient5.id)
+    dp6 = DoctorPatient.create!(doctor_id: @doctor2.id, patient_id: patient5.id)
     visit "/doctors/#{@doctor1.id}"
     expect(page).to have_content(patient5.name)
     click_on "Delete #{patient5.name}"
     expect(page).to_not have_content(patient5.name)
-    
+    visit "/doctors/#{@doctor2.id}"
+    expect(page).to have_content(patient5.name)
     end
   end
 end
