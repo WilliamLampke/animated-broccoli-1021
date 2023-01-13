@@ -1,0 +1,11 @@
+<h3>Hospital Show <%= @hospital.name%> </h3>
+
+<% @hospital.most_to_least.each do |doctor| %>
+    <h5>Name: <%= doctor.name %></h5>
+    <p>Patient Count: <%= doctor.patient_count %></p>
+    <h5>Patients: </h5>
+    <% doctor.patients.each do |patient| %>
+        <p><%= patient.name %></p>
+    <% end %>
+
+<% end %>

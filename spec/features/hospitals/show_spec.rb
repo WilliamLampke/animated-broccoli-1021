@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Patients Index' do
+RSpec.describe 'Hospital Show' do
   before :each do
     @hospital1 = Hospital.create!(name: 'Greys Anatomy')
     @hospital2 = Hospital.create!(name: 'fake hospital')
@@ -25,18 +25,21 @@ RSpec.describe 'Patients Index' do
 
     @dp4 = DoctorPatient.create!(doctor_id: @doctor4.id, patient_id: @patient4.id)
   end
-  describe 'patients index' do
-    it "I see the names of all adult patients (age is greater than 18),
-        And I see the names are in ascending alphabetical order (A - Z, you do not need to account for capitalization)" do
-      patient5 = Patient.create!(name: 'ababy', age: 1)
-      visit '/patients'
-      expect('Name: adam').to appear_before('Name: bob')
-      expect('Name: bob').to appear_before('Name: carol')
-      expect('Name: carol').to appear_before('Name: doug')
-
-      expect('135').to appear_before('45')
-      expect('45').to appear_before('25')
-      expect('25').to appear_before('65')
+  describe 'hospital show' do
+    it "I see the hospital's name
+    And I see the names of all doctors that work at this hospital,
+    And next to each doctor I see the number of patients associated with the doctor,
+    And I see the list of doctors is ordered from most number of patients to least number of patients
+    (Doctor patient counts should be a single query)" do
+      @dp5 = DoctorPatient.create!(doctor_id: @doctor2.id, patient_id: @patient1.id)
+      @dp6 = DoctorPatient.create!(doctor_id: @doctor3.id, patient_id: @patient2.id)
+      @dp7 = DoctorPatient.create!(doctor_id: @doctor3.id, patient_id: @patient1.id)
+      visit "/hospitals/#{@hospital1.id}"
+      expect(@doctor3.name).to appear_before(@doctor2.name)
+      expect(@doctor2.name).to appear_before(@doctor1.name)
+      expect(page).to have_content('Patient Count: 3')
+      expect(page).to have_content('Patient Count: 2')
+      expect(page).to have_content('Patient Count: 1')
     end
   end
 end
