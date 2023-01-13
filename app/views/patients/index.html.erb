@@ -1,0 +1,6 @@
+<h3>Patients Index </h3>
+<h5>Patients Over 18: </h5>
+<% @patients.adults.each do |patient| %>
+    <p>Name: <%= patient.name %></p>
+    <p>Age: <%= patient.age %></p>
+<% end %>
